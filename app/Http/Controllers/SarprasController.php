@@ -1,10 +1,10 @@
 <?php
-  
+
 namespace App\Http\Controllers;
-  
+
 use Illuminate\Http\Request;
 use App\Models\Sarpras;
- 
+
 class SarprasController extends Controller
 {
     /**
@@ -13,11 +13,11 @@ class SarprasController extends Controller
     public function index()
     {
         $sarpras = Sarpras::orderBy('created_at', 'DESC')->get();
-  
+
         return view('sarpras.index', compact('sarpras'));
 
     }
-  
+
     /**
      * Show the form for creating a new resource.
      */
@@ -25,7 +25,7 @@ class SarprasController extends Controller
     {
         return view('sarpras.create');
     }
-  
+
     /**
      * Store a newly created resource in storage.
      */
@@ -41,7 +41,7 @@ class SarprasController extends Controller
             'tanggal_pengadaan' => 'required|date', // Validasi untuk kolom tanggal
             'gambar.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi gambar
         ]);
-    
+
         // Simpan data ke database
         $sarpras = new Sarpras();
         $sarpras->nama_sarpras = $request->input('nama_sarpras');
@@ -51,7 +51,7 @@ class SarprasController extends Controller
         $sarpras->anggaran = $request->input('anggaran');
         $sarpras->tanggal_pengadaan = $request->input('tanggal_pengadaan'); // Menyimpan tanggal pengadaan
         $sarpras->save();
-    
+
         // Proses file gambar tanpa menyimpan ke database
         if ($request->hasFile('gambar')) {
             foreach ($request->file('gambar') as $file) {
@@ -59,10 +59,10 @@ class SarprasController extends Controller
                 // Tidak menyimpan $path ke database
             }
         }
-    
+
         return redirect()->route('sarpras')->with('success', 'Data sarpras berhasil disimpan!');
     }
-    
+
 
 
     /**
@@ -71,20 +71,20 @@ class SarprasController extends Controller
     public function show(string $id)
     {
         $sarpras = Sarpras::findOrFail($id);
-  
+
         return view('sarpras.show', compact('sarpras'));
     }
-  
+
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
         $sarpras = Sarpras::findOrFail($id);
-  
+
         return view('sarpras.edit', compact('sarpras'));
     }
-  
+
     /**
      * Update the specified resource in storage.
      */
@@ -117,16 +117,16 @@ class SarprasController extends Controller
     }
 
 
-  
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
         $sarpras = Sarpras::findOrFail($id);
-  
+
         $sarpras->delete();
-  
+
         return redirect()->route('sarpras')->with('success', 'sarpras deleted successfully');
     }
 }

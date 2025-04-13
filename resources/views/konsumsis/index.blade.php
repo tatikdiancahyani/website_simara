@@ -1,5 +1,5 @@
 @extends('layouts.app')
-  
+
 @section('contents')
     <div class="d-flex align-items-center justify-content-between">
         <h1 class="mb-0">List Konsumsi</h1>
@@ -22,6 +22,7 @@
                 <th>Harga</th>
                 <th>Pajak</th>
                 <th>Total</th>
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -55,7 +56,7 @@
                 <td class="text-center" colspan="8">Konsumsi not found</td>
             </tr>
         @endif
-        
+
         </tbody>
     </table>
 @endsection

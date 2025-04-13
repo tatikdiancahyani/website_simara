@@ -1,7 +1,7 @@
 @extends('layouts.app')
-  
+
 @section('title', 'Berita Acara')
-  
+
 @section('contents')
     <html>
     <head>
@@ -18,11 +18,7 @@
                 align-items: center;*/
                 background-color: #fff;
             }
-            .container {
-                width: 595px;
-                border: 1px solid #000;
-                padding: 20px;
-            }
+
             .header {
                 display: flex;
                 justify-content: space-between;
@@ -84,28 +80,16 @@
                 background-color: #f0f8ff;
                 font-weight: bold;
             }
-            button {
-                background-color: #6a5acd;
-                color: white;
-                padding: 10px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                width: 100%;
-                font-size: 16px;
-            }
-            button:hover {
-                background-color: #5a4cac;
-            }
+
             .warning {
                 color: red;
                 font-weight: bold;
                 margin-top: 10px;
             }
         .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1; 
+            display: none;
+            position: fixed;
+            z-index: 1;
             left: 0;
             top: 0;
             width: 100%;
@@ -139,7 +123,6 @@
     </head>
             <div class="container">
                 <!-- Tombol untuk menampilkan form -->
-                <button id="tambahBeritaAcaraBtn">Tambah Berita Acara</button>
 
                 <!-- Modal untuk input berita acara (awalnya disembunyikan) -->
                 <div id="modalBeritaAcara" class="modal" style="display: none;">
@@ -161,53 +144,65 @@
                             <input type="number" id="jumlah_peserta" name="jumlah_peserta" placeholder="Masukkan jumlah peserta">
 
                             <label for="hasil_rapat">Hasil Rapat</label>
-                            <input type="text" id="hasil_rapat" name="hasil_rapat" placeholder="Masukkan hasil rapat">
+                            <textarea id="hasil_rapat" name="hasil_rapat" class="form-control" placeholder="Masukkan hasil rapat"></textarea>
 
-                            <button type="submit">Simpan</button>
+                            <button type="submit" class="btn btn-primary mt-4">Simpan</button>
                         </form>
                     </div>
                 </div>
 
                 <!-- Menampilkan tabel jika ada data berita acara -->
                 @if($beritaAcara->isNotEmpty())
-                    <table border="1" cellspacing="0" cellpadding="5">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama Rapat</th>
-                                <th>Tanggal</th>
-                                <th>Ruang</th>
-                                <th>Jumlah Peserta</th>
-                                <th>Hasil Rapat</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($beritaAcara as $index => $item)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $item->nama_rapat }}</td>
-                                <td>{{ $item->tanggal }}</td>
-                                <td>{{ $item->ruang }}</td>
-                                <td>{{ $item->jumlah_peserta }}</td>
-                                <td>{{ $item->hasil_rapat }}</td>
-                                <td>
-                                    @if(isset($item->id_input) && $item->id_input)
-                                        <a href="{{ route('berita-acara.download', ['id' => $item->id_input]) }}">Download PDF</a>
-                                    @else
-                                        <span class="text-danger">ID Input tidak tersedia</span>
-                                    @endif
-                                    <a href="{{ route('berita-acara.edit', $item->id) }}">Edit</a>
-                                    <form action="{{ route('berita-acara.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus berita acara ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" style="background-color: red; color: white; border: none; padding: 5px 10px; cursor: pointer;">Hapus</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <div class="row justify-content-center">
+                      <div class="col-md-12">
+                        <div class="card">
+                          <div class="card-header">
+                            <button id="tambahBeritaAcaraBtn" class="btn btn-primary">Tambah Berita Acara</button>
+
+                          </div>
+                          <div class="card-body">
+                            <table class="table table-bordered" >
+                              <thead>
+                                  <tr>
+                                      <th>No</th>
+                                      <th>Nama Rapat</th>
+                                      <th>Tanggal</th>
+                                      <th>Ruang</th>
+                                      <th>Jumlah Peserta</th>
+                                      <th>Hasil Rapat</th>
+                                      <th>Aksi</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  @foreach($beritaAcara as $index => $item)
+                                  <tr>
+                                      <td>{{ $index + 1 }}</td>
+                                      <td>{{ $item->nama_rapat }}</td>
+                                      <td>{{ $item->tanggal }}</td>
+                                      <td>{{ $item->ruang }}</td>
+                                      <td>{{ $item->jumlah_peserta }}</td>
+                                      <td>{{ $item->hasil_rapat }}</td>
+                                      <td>
+                                          @if(isset($item->id_input) && $item->id_input)
+                                              <a class="btn btn-sm btn-primary" href="{{ route('berita-acara.download', ['id' => $item->id_input]) }}">Download PDF</a>
+                                          @else
+                                              <span class="text-danger">ID Input tidak tersedia</span>
+                                          @endif
+                                          <a href="{{ route('berita-acara.edit', ['id' => $item->id_input]) }}" class="btn btn-sm btn-warning">Edit</a>
+                                          <form action="{{ route('berita-acara.destroy', ['id' => $item->id_input]) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus berita acara ini?')">
+                                              @csrf
+                                              @method('DELETE')
+                                              <button type="submit" class="btn btn-sm mt-2 btn-danger">Hapus</button>
+                                          </form>
+                                      </td>
+                                  </tr>
+                                  @endforeach
+                              </tbody>
+                          </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 @else
                     <p>Tidak ada data berita acara.</p>
                 @endif

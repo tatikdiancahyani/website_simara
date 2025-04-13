@@ -12,7 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('berita_acaras', function (Blueprint $table) {
-            $table->id();
+          $table->id('id_input');
+            $table->string('nama_rapat');
+            $table->date('tanggal');
+            $table->string('ruang');
+            $table->integer('jumlah_peserta');
+            $table->text('hasil_rapat');
             $table->timestamps();
         });
     }
