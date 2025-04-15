@@ -9,7 +9,6 @@ class BeritaAcara extends Model
 {
     use HasFactory;
 
-    protected $table = 'input'; // Tabel yang digunakan
     protected $primaryKey = 'id_input'; // Primary Key
     public $timestamps = true; // Pastikan timestamps aktif
 
